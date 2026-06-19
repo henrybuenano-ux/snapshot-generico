@@ -265,6 +265,8 @@ Todos creados en la carpeta **"WF Ventas (blueprint)"**. Regla aplicada: **los e
 | WF-09 · Solicitud de Reseña | ⚠️ **poner trigger** Opp Stage → "Servicio Realizado" | ✅ 2 (enrola con `campana de reactivación` → RBD 01) | Trigger |
 
 > Todos quedan en **draft**: revisá, completá los triggers/WhatsApp marcados, y **publicá** uno a uno.
+>
+> **Nodos de oportunidad:** se usa la acción **"Create or update opportunity"** (`create_opportunity`) en todos — pipeline **Ventas** + la etapa correspondiente. Es la verificada y da menos fallos. *(GHL muestra un aviso de deprecación a favor de "Create Opportunity"/"Update Opportunity" por separado; si en el futuro querés migrar, es un swap en UI.)*
 
 ## 🔎 REVISIÓN DEL MÓDULO RBD (lo instaló tu snapshot — published)
 
