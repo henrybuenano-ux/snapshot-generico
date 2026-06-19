@@ -16,7 +16,8 @@
 | Pipeline Ventas (7 etapas) | ✅ **Hecho** (colores bg-tint) | API interna |
 | Pipeline Reactivación/Reseñas (8 etapas) | ✅ **Hecho** | API interna |
 | Calendario | ⏳ **Parcial** — existe pero requiere config (disponibilidad/equipo) y activar en UI | manual |
-| Workflows (WF-01…09 + RBD) | ⏳ **Pendiente** — specs abajo. 4/9 dependen de plantillas Meta | API interna / UI |
+| Workflows Ventas (WF-01…09) | ✅ **Construidos** (drafts). Ver notas + pasos manuales abajo | API interna |
+| Workflows RBD (01–09) | ✅ Instalados por tu snapshot (published). Revisión abajo | snapshot |
 | Plantillas WhatsApp (T01–T05) | ✋ **Manual** — enviar a Meta (no hay API). Texto listo abajo | UI + Meta |
 | Prompt del Bot (Conversation AI) | ✋ **Manual** — pegar 3 partes (listas abajo) | UI |
 | Forms + Survey (RBD) | ✋ **Manual** — spec abajo | UI |
@@ -245,6 +246,38 @@ Pipeline **Reactivación / Reseñas**. RBD 01 motor (dedup → opp `Mensaje envi
 > ⚠️ Al clonar RBD de otra cuenta: cambiar emails de notificación a {{custom_values.email_negocio}}, marca/imágenes, Google Place ID, localizar a castellano, y corregir el key del campo survey a `calificacion_1_5`.
 
 ---
+
+## 🔁 WORKFLOWS DE VENTAS — construidos (drafts) y qué falta a mano
+
+Todos creados en la carpeta **"WF Ventas (blueprint)"**. Regla aplicada: **los envíos de WhatsApp son nodos con el nombre de su plantilla** (tipo placeholder `add_notes`, NO envían) — reemplazá cada uno por la acción **WhatsApp** real y elegí la plantilla cuando tengas suscripción/aprobación Meta.
+
+| WF | Trigger | Pasos hechos | Te toca a mano |
+|---|---|---|---|
+| WF-01 · Bienvenida + Activación | ✅ Customer Replied ×3 canal + branch | ✅ 18 pasos (reusado, intacto) | Revisar; opcional añadir tags `canal-*`, Tipo cliente, UTM |
+| WF-02 · Pre-reserva | ✅ Tag `pre-reserva` | ✅ 5 | — (opcional, solo modelo "humano agenda") |
+| WF-02b · Cita Reservada | ⚠️ **poner trigger** Customer Booked Appointment | ✅ 5 (incl. nodo WhatsApp T02-b) | Trigger + acción WhatsApp |
+| WF-03 · Recordatorio 24h | ⚠️ **poner trigger** Booked Appointment | ✅ 5 | Trigger + cambiar Wait por **Wait Until** (Fecha de cita −1d) + WhatsApp T03 |
+| WF-04 · Remarketing | ✅ Tag `lead-nuevo` | ✅ 7 (T04+T05) | Filtros *Doesn't Have* `pre-reserva`/`baja-marketing` + IF pre-reserva→End + WhatsApp |
+| WF-05 · Normalización servicio | ✅ Contact Changed (reusado SB-WF-03) | ✅ existente | Revisar ramas por servicio |
+| WF-06 · Confirmación Señal | ✅ Tag `senal-pagada` | ✅ 3 | Dejar **OFF** salvo `pide_senal=sí` + WhatsApp |
+| WF-07 · Handoff a Humano | ✅ Tag `solicitud-asesor-humano` | ✅ 2 | — |
+| WF-08 · Opt-out / Baja | ⚠️ **poner trigger** Customer Replied + "BAJA/STOP" | ✅ 3 | Trigger + WhatsApp confirmación |
+| WF-09 · Solicitud de Reseña | ⚠️ **poner trigger** Opp Stage → "Servicio Realizado" | ✅ 2 (enrola con `campana de reactivación` → RBD 01) | Trigger |
+
+> Todos quedan en **draft**: revisá, completá los triggers/WhatsApp marcados, y **publicá** uno a uno.
+
+## 🔎 REVISIÓN DEL MÓDULO RBD (lo instaló tu snapshot — published)
+
+Lo que está bien: usa **SMS** (no depende de Meta), 9 workflows + 2 forms + survey + pipeline ya conectados. **WF-09 ya lo alimenta** (tag `campana de reactivación`).
+
+⚠️ **Adaptar a mano (blueprint §15.5 — viene clonado de otra cuenta):**
+- 🔴 **Emails de notificación de los 2 forms** → cambiá a `{{custom_values.email_negocio}}`. La API devuelve 401 en la config de forms, así que **revisá en UI** (Sites → Forms → Settings/Notifications) que no apunten a correos de terceros (Agencia GarLey / La Guadalupana). *Riesgo de fuga de datos.*
+- 🔴 **Google Place ID / enlace de reseña** → poné el del cliente en la survey y en `{{custom_values.link_resena_google}}`.
+- 🔴 **Marca/imágenes** de forms y survey → reemplazar por las del cliente.
+- 🟠 **RBD 07** tiene la **rama duplicada** (pasos 1-4 y 5-8 idénticos) → borrá una en UI.
+- 🟠 **SMS en español latino** → adaptar a castellano de España.
+- 🟡 **Tags duplicados**: el snapshot usa `campana de reactivación`, `voto 1-3`, `votó 4-5`, `dejó reseña en google`, `dio clic trigger link google review`, `respondió a campana reactivacion bd`, `link directo google`, `no dio respuesta`, `google_review`, `test a/b`. Conviven con mis kebab-case (`reactivacion-bd`, `voto-1-3`…). El módulo **funciona con los suyos**; estandarizar a kebab-case implicaría editar los 9 workflows publicados (hazlo solo si querés limpieza total).
+- 🟡 **Campo survey** `Califícanos del 1 al 5` (RADIO) → el blueprint pide key `calificacion_1_5`; verificá que RBD 02/05 lo lean bien.
 
 ## ✅ CHECKLIST PARA TERMINAR EL 100%
 - [ ] Rellenar Custom Values del cliente (negocio, servicios, precios, política, FAQ…)
