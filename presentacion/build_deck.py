@@ -42,7 +42,7 @@ ADS_PVP   = {"Z":"250 €/mes","S":"450 €/mes","P":"625 €/mes","T":"a medida
 PLAN_TOTAL= {"Z":"447 €/mes","S":"647 €/mes","P":"822 €/mes","T":"a medida"} # ómibu + sistema 197
 ADS_MARGEN= {"Z":"100 €","S":"180 €","P":"250 €","T":"—"}
 OUT  = os.path.join(os.path.dirname(__file__), "omnia-sistema-clinicas.pptx")
-TOTAL = 17
+TOTAL = 18
 # ===========================================================================
 
 prs = Presentation(); prs.slide_width = Inches(13.333); prs.slide_height = Inches(7.5)
@@ -187,20 +187,30 @@ footer(s,12,"Antes vs Después")
 
 # 13 Planes (cliente) Z/S/P/T
 s=slide(); head(s,"Planes","Cuatro niveles —  el anuncio trae, el sistema convierte","Cada plan = gestión de ads (Google/Meta) + el sistema CRM "+BRAND+" completo.")
-planes=[("Captación · Z",[PLAN_TOTAL["Z"],"Ads 1 canal (Google o Meta)","Sistema "+BRAND+" incluido","Campañas de leads"],ACCENT2),
-("Crecimiento · S",[PLAN_TOTAL["S"],"Ads 2 canales + analítica","Sistema "+BRAND+" incluido","Más campañas"],ACCENT),
-("Pro · P",[PLAN_TOTAL["P"],"Gestión avanzada + redistribución","Sistema "+BRAND+" incluido","Reporting"],ACCENT2),
-("Escala · T",[PLAN_TOTAL["T"],"Multi-campaña / multi-sede","Sistema "+BRAND+" incluido","A medida"],ACCENT)]
+planes=[("Captación · Z",["447 €/mes  todo incluido","= 197 € sistema + 250 € ads","Activación única: "+ACTIVACION,"Ads 1 canal (Google/Meta)"],ACCENT2),
+("Crecimiento · S",["647 €/mes  todo incluido","= 197 € sistema + 450 € ads","Activación única: "+ACTIVACION,"Ads 2 canales + analítica"],ACCENT),
+("Pro · P",["822 €/mes  todo incluido","= 197 € sistema + 625 € ads","Activación única: "+ACTIVACION,"Gestión avanzada"],ACCENT2),
+("Escala · T",["A medida","= 197 € sistema + ads a medida","Activación única: "+ACTIVACION,"Multi-sede / multi-campaña"],ACCENT)]
 cards(s,planes,top=2.5,h=2.7,cols=4)
 rect(s,0.55,5.35,12.2,0.85,WARNBG,rounded=True)
 text(s,0.75,5.42,11.8,0.75,[[("Activación única "+ACTIVACION+" · sistema "+SYS_MES+" (ya incluido en el plan).  A medida costaría "+VALOR_CUSTOM+" (cotizador): con "+BRAND+", productizado.",10.5,True,WARN)],[("Aparte: inversión publicitaria (desde 300 €/camp.) + comunicación (WhatsApp/email/IA) según consumo.  Precios propuestos (+IVA), a validar.",10.5,False,WARN)]],sp=2)
 footer(s,13,"Planes")
 
-# 14 INTERNO — modelo
+# 14 Cómo se paga (cliente)
+s=slide(); head(s,"Cómo se paga","Fácil: un pago al empezar y luego una cuota fija","Ejemplo con el plan Captación. Funciona igual en todos los planes.")
+rect(s,0.55,2.5,5.9,2.45,LIGHT,rounded=True); rect(s,0.63,2.58,5.74,0.09,ACCENT,rounded=True)
+text(s,0.85,2.85,5.4,2.0,[[("EL PRIMER MES",13,True,ACCENT)],[("290 €  activación (una sola vez)",14,True,PRIMARY)],[("+ 447 €  primera mensualidad",14,True,PRIMARY)],[("= 737 €  total para arrancar",15,True,INK)]],sp=10)
+rect(s,6.85,2.5,5.9,2.45,LIGHT,rounded=True); rect(s,6.93,2.58,5.74,0.09,ACCENT2,rounded=True)
+text(s,7.15,2.85,5.4,2.0,[[("DEL MES 2 EN ADELANTE",13,True,ACCENT2)],[("447 € / mes",22,True,PRIMARY)],[("= 197 € sistema omnia + 250 € ads",12.5,False,INK)],[("La activación NO se vuelve a pagar.",12,False,GRAY)]],sp=8)
+rect(s,0.55,5.25,12.2,1.05,WARNBG,rounded=True)
+text(s,0.78,5.36,11.7,0.85,[[("Aparte (lo pagas a Google/Meta y proveedores, NO a "+BRAND+"):",11,True,WARN)],[("tu inversión en anuncios (desde 300 €) + consumos del sistema (WhatsApp, IA, correos…).  Cifras + IVA.",11,False,WARN)]],sp=2)
+footer(s,14,"Cómo se paga")
+
+# 15 INTERNO — modelo
 s=slide(); head(s,"Modelo de negocio","Cómo se arma y quién factura","Uso interno —  no mostrar al cliente.")
 chain(s,[(ADS_PARTNER+" (Ads)","gestiona campañas\n(tarifa de lista)"),(BRAND+" (CRM)","añade el sistema\ny FACTURA todo"),("Cliente / Clínica","paga 1 sola\nfactura a "+BRAND)],top=3.0,h=1.8)
 text(s,0.55,5.3,12.2,1.2,[[("El cliente paga la tarifa "+ADS_PARTNER+" por los ads (precio de lista); "+BRAND+" los gestiona con descuento interno de "+ADS_PARTNER+", suma su sistema CRM propio (Sofía, pipeline, reputación) y factura todo en una sola cuota.",13.5,False,INK)]])
-footer(s,14,"Modelo de negocio",internal=True)
+footer(s,15,"Modelo de negocio",internal=True)
 
 # 15 INTERNO — costo / margen
 s=slide(); head(s,"Economía del modelo","Por nivel (propuesta para dirección)","Uso interno —  precio al cliente, ingreso recurrente de "+BRAND+" y ancla de valor.")
@@ -220,7 +230,7 @@ for r_i,row in enumerate(rows):
         bold = val.startswith(("Captación","Crecim","Pro","Escala"))
         text(s,cx+0.1,ty,w_-0.2,0.55,[[(val,10.5,bold,INK)]],anchor=MSO_ANCHOR.MIDDLE); cx+=w_
 text(s,0.55,5.55,12.2,1.3,[[("Activación única: "+ACTIVACION+"  ·  Ingreso recurrente "+BRAND+" = sistema "+SYS_MES+" (producto propio).",10.5,True,WARN)],[("Ads: precio cliente = tarifa "+ADS_PARTNER+"; "+BRAND+" recibe descuento interno de "+ADS_PARTNER+" (margen EN DISCUSIÓN).  Ancla de valor: a medida "+VALOR_CUSTOM+".  PROPUESTA.",10.5,False,WARN)]],sp=3)
-footer(s,15,"Costo / margen",internal=True)
+footer(s,16,"Economía del modelo",internal=True)
 
 # 16 Costes operativos (cliente)
 s=slide(); head(s,"Consumos de terceros","Costes operativos estimados","Servicios externos que se pagan según uso, aparte de la cuota de "+BRAND+". El cliente mantiene el control y la titularidad de cada cuenta.")
@@ -245,7 +255,7 @@ for i,(nom,desc,modelo,est) in enumerate(filas):
 iy=t0+0.5+5*rh+0.12
 rect(s,0.55,iy,12.2,0.66,RGBColor(0xEE,0xEC,0xFB),rounded=True)
 text(s,0.78,iy+0.06,11.7,0.55,[[("Estos consumos no los factura "+BRAND+".  ",10,True,ACCENT),("Son pagos directos a los proveedores según el volumen real; en el discovery técnico afinamos las cifras según los canales que se activen.  *Cifras en € (IVA no incluido).",10,False,GRAY)]],sp=0,anchor=MSO_ANCHOR.MIDDLE)
-footer(s,16,"Costes operativos")
+footer(s,17,"Costes operativos")
 
 # 17 Cierre
 s=slide(); grad(s,0,0,SW.inches,SH.inches,GA,GC,35)
