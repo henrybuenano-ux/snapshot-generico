@@ -20,18 +20,27 @@ SUBBRAND   = "Sistema Ads + CRM para Clínicas"
 NICHOS     = "Odontología · Estética · Medicina estética"
 ADS_PARTNER= "ómibu"                       # motor de ads (proveedor, uso interno)
 LOGO_PATH  = ""                            # ruta a un PNG -> aparece en portada
-PRIMARY    = RGBColor(0x0B, 0x1F, 0x3A)    # navy
-ACCENT     = RGBColor(0x14, 0xB8, 0xA6)    # teal
-ACCENT2    = RGBColor(0x25, 0x63, 0xEB)    # azul
+PRIMARY    = RGBColor(0x14, 0x10, 0x2B)    # índigo oscuro (omnia)
+ACCENT     = RGBColor(0x9A, 0x3C, 0xE0)    # púrpura omnia
+ACCENT2    = RGBColor(0x4F, 0x46, 0xE5)    # azul/índigo omnia
+PINK       = RGBColor(0xEC, 0x48, 0x99)    # rosa omnia
+GA         = RGBColor(0x4F, 0x46, 0xE5)    # gradiente omnia: índigo
+GC         = RGBColor(0xEC, 0x48, 0x99)    # gradiente omnia: rosa
 WARN       = RGBColor(0x92, 0x40, 0x0E)
 WARNBG     = RGBColor(0xFE, 0xF3, 0xC7)
 INK        = RGBColor(0x0F, 0x17, 0x2A)
 GRAY       = RGBColor(0x64, 0x74, 0x8B)
-LIGHT      = RGBColor(0xF1, 0xF5, 0xF9)
+LIGHT      = RGBColor(0xF3, 0xF1, 0xFB)    # lavanda muy claro
 WHITE      = RGBColor(0xFF, 0xFF, 0xFF)
 FONT       = "Calibri"
-# Tarifas de gestión de ads (COSTO ómibu, €/mes) — reales del Excel 2026
-ADS = {"Z":"250 €/mes","S":"450 €/mes","P":"625 €/mes","T":"a medida"}
+# --- PRECIOS (PROPUESTA — PRODUCTO masivo/MVP, no custom; ancla = valor cotizador) ---
+VALOR_CUSTOM = "5.683 $"    # ancla: lo que costaría el sistema a medida (cotizador)
+ACTIVACION   = "290 €"      # alta/activación única (productizado, snapshot templatizado)
+SYS_MES      = "197 €/mes"  # sistema omnia (SaaS): Sofía + pipeline + reputación + workflows + soporte
+ADS_COST  = {"Z":"250 €","S":"450 €","P":"625 €","T":"a medida"}              # COSTO ómibu (Excel)
+ADS_PVP   = {"Z":"350 €/mes","S":"630 €/mes","P":"875 €/mes","T":"a medida"}  # precio omnia (markup ~40%)
+PLAN_TOTAL= {"Z":"547 €/mes","S":"827 €/mes","P":"1.072 €/mes","T":"a medida"}# sistema + ads
+ADS_MARGEN= {"Z":"100 €","S":"180 €","P":"250 €","T":"—"}
 OUT  = os.path.join(os.path.dirname(__file__), "omnia-sistema-clinicas.pptx")
 TOTAL = 17
 # ===========================================================================
@@ -46,6 +55,14 @@ def rect(s,l,t,w,h,fill,line=None,rounded=False):
     if line is None: shp.line.fill.background()
     else: shp.line.color.rgb=line; shp.line.width=Pt(1)
     shp.shadow.inherit=False; return shp
+def grad(s,l,t,w,h,c1,c2,angle=35):
+    shp=s.shapes.add_shape(MSO_SHAPE.RECTANGLE,Inches(l),Inches(t),Inches(w),Inches(h))
+    shp.fill.gradient()
+    try: shp.fill.gradient_angle=angle
+    except Exception: pass
+    st=shp.fill.gradient_stops
+    st[0].color.rgb=c1; st[0].position=0.0; st[1].color.rgb=c2; st[1].position=1.0
+    shp.line.fill.background(); shp.shadow.inherit=False; return shp
 def text(s,l,t,w,h,runs,align=PP_ALIGN.LEFT,anchor=MSO_ANCHOR.TOP,sp=4):
     tb=s.shapes.add_textbox(Inches(l),Inches(t),Inches(w),Inches(h)); tf=tb.text_frame
     tf.word_wrap=True; tf.vertical_anchor=anchor
@@ -80,11 +97,11 @@ def cards(s,items,top=2.6,h=3.2,cols=3):
         text(s,l+0.2,t+1.0,w-0.4,h-1.15,[[("•  "+b,11,False,INK)] for b in body],sp=5)
 
 # 1 Portada
-s=slide(); rect(s,0,0,SW.inches,SH.inches,PRIMARY); rect(s,0,0,0.25,SH.inches,ACCENT)
-text(s,1.0,2.0,11.5,0.5,[[("GUÍA PARA EQUIPO Y CLIENTE",13,True,ACCENT)]])
+s=slide(); grad(s,0,0,SW.inches,SH.inches,GA,GC,35)
+text(s,1.0,2.0,11.5,0.5,[[("GUÍA PARA EQUIPO Y CLIENTE",13,True,WHITE)]])
 text(s,1.0,2.5,11.5,1.2,[[(BRAND,54,True,WHITE)]])
 text(s,1.0,3.7,11.5,0.9,[[(SUBBRAND,22,False,WHITE)]])
-text(s,1.0,4.6,11.5,0.5,[[(NICHOS,15,False,ACCENT)]])
+text(s,1.0,4.6,11.5,0.5,[[(NICHOS,15,False,WHITE)]])
 if LOGO_PATH and os.path.exists(LOGO_PATH): s.shapes.add_picture(LOGO_PATH,Inches(10.6),Inches(0.6),height=Inches(1.0))
 text(s,1.0,6.3,11.5,0.5,[[("Convertimos anuncios en pacientes —  y pacientes en reseñas de 5★.",13,False,WHITE)]])
 
@@ -118,16 +135,16 @@ cards(s,[("Atiende 24/7",["Responde en segundos","Sin sueldo ni descansos","Mism
 footer(s,5,"Asistente IA")
 
 # 6 Captación
-s=slide(); head(s,"Captación","Todos los canales en una bandeja —  y sabés de dónde vino cada lead","")
+s=slide(); head(s,"Captación","Todos los canales en una bandeja —  y sabes de dónde vino cada lead","")
 cards(s,[("Multicanal",["WhatsApp, Instagram, Facebook","Una conversación por paciente","Nada se traspapela"],ACCENT2),
-("Atribución de ads",["Guarda UTM y el anuncio (Ad)","Sabés qué campaña trae pacientes"],ACCENT2),
+("Atribución de ads",["Guarda UTM y el anuncio (Ad)","Sabes qué campaña trae pacientes"],ACCENT2),
 ("Canal detectado",["Etiqueta canal-wa/ig/fb","Pide el teléfono solo si hace falta","Listo para remarketing"],ACCENT2)],top=2.7,h=2.6)
 footer(s,6,"Captación multicanal")
 
 # 7 Pipeline
 s=slide(); head(s,"Pipeline de ventas","Ves en qué punto está cada paciente","Cada oportunidad avanza por etapas claras —  como una operación con fases.")
 chain(s,[("Nuevo Lead",""),("En conversación humana",""),("Pre-reserva / Cita Reservada",""),("Cita Confirmada",""),("No Asistió",""),("Servicio Realizado (Ganado)",""),("Perdido","")],top=3.2,h=1.4)
-text(s,0.55,5.2,12.2,1.0,[[("Los robots mueven al paciente de etapa automáticamente. Vos ves el tablero y sabés qué falta para cada cierre.",14,False,GRAY)]])
+text(s,0.55,5.2,12.2,1.0,[[("Los robots mueven al paciente de etapa automáticamente. Ves el panel y sabes qué falta para cada cierre.",14,False,GRAY)]])
 footer(s,7,"Pipeline de ventas")
 
 # 8 Automatizaciones
@@ -142,7 +159,7 @@ s=slide(); head(s,"Reputación Google","Más reseñas de 5★ —  y las malas, 
 rect(s,0.55,2.7,5.9,2.6,LIGHT,rounded=True); rect(s,0.55,2.7,5.9,0.14,ACCENT)
 text(s,0.8,3.0,5.4,2.2,[[("⭐ 4–5 estrellas",16,True,PRIMARY)],[("→ va directo a Google",12.5,False,INK)],[("Más reputación pública, más pacientes nuevos.",12,False,GRAY)]],sp=8)
 rect(s,6.85,2.7,5.9,2.6,LIGHT,rounded=True); rect(s,6.85,2.7,5.9,0.14,ACCENT2)
-text(s,7.1,3.0,5.4,2.2,[[("⭐ 1–3 estrellas",16,True,PRIMARY)],[("→ formulario privado (NO a Google)",12.5,False,INK)],[("Recuperás al paciente y proteges la marca.",12,False,GRAY)]],sp=8)
+text(s,7.1,3.0,5.4,2.2,[[("⭐ 1–3 estrellas",16,True,PRIMARY)],[("→ formulario privado (NO a Google)",12.5,False,INK)],[("Recuperas al paciente y proteges la marca.",12,False,GRAY)]],sp=8)
 text(s,0.55,5.6,12.2,0.7,[[("También reactiva tu base de datos antigua para traer pacientes que ya tenías.",13.5,True,ACCENT)]])
 footer(s,9,"Reputación Google")
 
@@ -170,13 +187,13 @@ footer(s,12,"Antes vs Después")
 
 # 13 Planes (cliente) Z/S/P/T
 s=slide(); head(s,"Planes","Cuatro niveles —  el anuncio trae, el sistema convierte","Cada plan = gestión de ads (Google/Meta) + el sistema CRM "+BRAND+" completo.")
-planes=[("Captación · Z",["Ads: "+ADS["Z"],"1 canal (Google o Meta)","Campañas de leads","+ Sistema "+BRAND+" (impl. + mensual)"],ACCENT2),
-("Crecimiento · S",["Ads: "+ADS["S"],"Más campañas / 2 canales","+ Analítica de leads","+ Sistema "+BRAND+" (impl. + mensual)"],ACCENT),
-("Pro · P",["Ads: "+ADS["P"],"Gestión avanzada","+ Redistribución de presupuesto","+ Sistema "+BRAND+" (impl. + mensual)"],ACCENT2),
-("Escala · T",["Ads: "+ADS["T"],"Multi-campaña / multi-sede","+ Reporting a medida","+ Sistema "+BRAND+" (impl. + mensual)"],ACCENT)]
-cards(s,planes,top=2.5,h=2.85,cols=4)
-rect(s,0.55,5.5,12.2,0.72,WARNBG,rounded=True)
-text(s,0.75,5.57,11.8,0.6,[[("Sistema "+BRAND+" = implementación única + mensualidad.  Aparte: inversión en ads (mín. 300 €/camp.) ",11,True,WARN)],[("+ costos de comunicación (WhatsApp, email, IA) según consumo.  Precio final al cliente: a definir (ver slides internas).",11,False,WARN)]],sp=2)
+planes=[("Captación · Z",[PLAN_TOTAL["Z"],"Ads 1 canal (Google o Meta)","Sistema "+BRAND+" incluido","Campañas de leads"],ACCENT2),
+("Crecimiento · S",[PLAN_TOTAL["S"],"Ads 2 canales + analítica","Sistema "+BRAND+" incluido","Más campañas"],ACCENT),
+("Pro · P",[PLAN_TOTAL["P"],"Gestión avanzada + redistribución","Sistema "+BRAND+" incluido","Reporting"],ACCENT2),
+("Escala · T",[PLAN_TOTAL["T"],"Multi-campaña / multi-sede","Sistema "+BRAND+" incluido","A medida"],ACCENT)]
+cards(s,planes,top=2.5,h=2.7,cols=4)
+rect(s,0.55,5.35,12.2,0.85,WARNBG,rounded=True)
+text(s,0.75,5.42,11.8,0.75,[[("Activación única "+ACTIVACION+" · sistema "+SYS_MES+" (ya incluido en el plan).  A medida costaría "+VALOR_CUSTOM+" (cotizador): con "+BRAND+", productizado.",10.5,True,WARN)],[("Aparte: inversión publicitaria (desde 300 €/camp.) + comunicación (WhatsApp/email/IA) según consumo.  Precios propuestos (+IVA), a validar.",10.5,False,WARN)]],sp=2)
 footer(s,13,"Planes")
 
 # 14 INTERNO — modelo
@@ -186,24 +203,23 @@ text(s,0.55,5.3,12.2,1.2,[[(BRAND+" compra los ads a "+ADS_PARTNER+" (tarifas de
 footer(s,14,"Modelo de negocio",internal=True)
 
 # 15 INTERNO — costo / margen
-s=slide(); head(s,"Costo y margen","Estructura por nivel (a completar)","Uso interno —  costos "+ADS_PARTNER+" reales; precio al cliente y margen los define "+BRAND+".")
-cols=[("Nivel",2.3),("Ads (costo "+ADS_PARTNER+")",2.2),("Sistema "+BRAND+" /mes",2.1),("Comunicación",2.0),("Precio cliente",1.9),("Margen",1.7)]
+s=slide(); head(s,"Costo y margen","Estructura por nivel (propuesta)","Uso interno —  costos "+ADS_PARTNER+" reales + precios producto propuestos. Validar.")
+cols=[("Nivel",1.95),("Costo ads ("+ADS_PARTNER+")",2.05),("Precio ads",1.85),("Sistema /mes",1.85),("Total cliente /mes",2.25),("Margen ads",2.2)]
 x=0.55; t0=2.45
 cx=x
 for (h_,w_) in cols:
-    rect(s,cx,t0,w_,0.5,PRIMARY); text(s,cx+0.07,t0,w_-0.14,0.5,[[(h_,9.5,True,WHITE)]],anchor=MSO_ANCHOR.MIDDLE); cx+=w_
-rows=[("Captación · Z",ADS["Z"],"[definir]","según consumo","[definir]","[definir]"),
-("Crecimiento · S",ADS["S"],"[definir]","según consumo","[definir]","[definir]"),
-("Pro · P",ADS["P"],"[definir]","según consumo","[definir]","[definir]"),
-("Escala · T",ADS["T"],"[definir]","según consumo","[definir]","[definir]")]
+    rect(s,cx,t0,w_,0.5,PRIMARY); text(s,cx+0.06,t0,w_-0.12,0.5,[[(h_,9,True,WHITE)]],anchor=MSO_ANCHOR.MIDDLE); cx+=w_
+rows=[("Captación · Z",ADS_COST["Z"],ADS_PVP["Z"],SYS_MES,PLAN_TOTAL["Z"],ADS_MARGEN["Z"]),
+("Crecimiento · S",ADS_COST["S"],ADS_PVP["S"],SYS_MES,PLAN_TOTAL["S"],ADS_MARGEN["S"]),
+("Pro · P",ADS_COST["P"],ADS_PVP["P"],SYS_MES,PLAN_TOTAL["P"],ADS_MARGEN["P"]),
+("Escala · T",ADS_COST["T"],ADS_PVP["T"],SYS_MES,PLAN_TOTAL["T"],ADS_MARGEN["T"])]
 for r_i,row in enumerate(rows):
-    ty=t0+0.5+r_i*0.55; cx=x; bg=WHITE if r_i%2==0 else LIGHT
+    ty=t0+0.5+r_i*0.5; cx=x; bg=WHITE if r_i%2==0 else LIGHT
     for (val,(h_,w_)) in zip(row,cols):
-        rect(s,cx,ty,w_,0.55,bg)
-        bold = (val.startswith("Captación") or val.startswith("Crecim") or val.startswith("Pro") or val.startswith("Escala"))
-        col = WARN if val=="[definir]" else INK
-        text(s,cx+0.07,ty,w_-0.14,0.55,[[(val,9.5,bold,col)]],anchor=MSO_ANCHOR.MIDDLE); cx+=w_
-text(s,0.55,5.35,12.2,1.3,[[("+ Implementación única del sistema (one-time): [definir].   ·   Comunicación = WhatsApp + email + IA (slide siguiente).",11.5,True,WARN)],[("Falta definir por "+BRAND+": precio del SISTEMA (implementación + mensual) y si los ads van a costo o con markup.",11.5,False,WARN)]],sp=4)
+        rect(s,cx,ty,w_,0.5,bg)
+        bold = val.startswith(("Captación","Crecim","Pro","Escala"))
+        text(s,cx+0.06,ty,w_-0.12,0.5,[[(val,9,bold,INK)]],anchor=MSO_ANCHOR.MIDDLE); cx+=w_
+text(s,0.55,4.95,12.2,1.5,[[("Activación única: "+ACTIVACION+" (margen alto: el snapshot es templatizado).   ·   Sistema "+SYS_MES+" = plataforma + IA + soporte.",10.5,True,WARN)],[("Ancla de valor: a medida = "+VALOR_CUSTOM+" (cotizador).   ·   Comunicación (WhatsApp/email/IA) según consumo.   ·   PROPUESTA — validar y unificar moneda.",10.5,False,WARN)]],sp=3)
 footer(s,15,"Costo / margen",internal=True)
 
 # 16 INTERNO — costos de comunicación
@@ -215,10 +231,10 @@ text(s,0.55,5.75,12.2,0.7,[[("Recomendado: incluir un 'fee de comunicación' fij
 footer(s,16,"Costos de comunicación",internal=True)
 
 # 17 Cierre
-s=slide(); rect(s,0,0,SW.inches,SH.inches,PRIMARY); rect(s,0,0,0.25,SH.inches,ACCENT)
-text(s,1.0,2.1,11.5,0.5,[[("EN RESUMEN",13,True,ACCENT)]])
+s=slide(); grad(s,0,0,SW.inches,SH.inches,GA,GC,35)
+text(s,1.0,2.1,11.5,0.5,[[("EN RESUMEN",13,True,WHITE)]])
 text(s,1.0,2.6,11.5,1.6,[[("Un sistema que capta, atiende",30,True,WHITE)],[("y fideliza —  con una sola factura.",30,True,WHITE)]],sp=2)
-text(s,1.0,4.4,11.5,1.4,[[("✓  Ads (Google/Meta) + CRM en un solo sistema",15,False,WHITE)],[("✓  En español, adaptable a odontología, estética y medicina",15,False,WHITE)],[("✓  Templatizado: nuevo cliente en horas",15,False,WHITE)]],sp=8)
-text(s,1.0,6.3,11.5,0.5,[[(BRAND+"  ·  [web / contacto]",14,True,ACCENT)]])
+text(s,1.0,4.4,11.5,1.4,[[("✓  Ads (Google/Meta) + CRM en un solo sistema",15,False,WHITE)],[("✓  En español de España, para odontología, estética y medicina",15,False,WHITE)],[("✓  Templatizado y masivo: nuevo cliente en horas",15,False,WHITE)]],sp=8)
+text(s,1.0,6.3,11.5,0.5,[[(BRAND+"  ·  omniainbusiness.com",14,True,WHITE)]])
 
 prs.save(OUT); print("OK ->",OUT)
