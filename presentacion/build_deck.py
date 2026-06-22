@@ -236,7 +236,7 @@ for (h_,w_) in cc:
     rect(s,cx,t0,w_,0.5,PRIMARY); text(s,cx+0.12,t0,w_-0.24,0.5,[[(h_,10.5,True,WHITE)]],align=al,anchor=MSO_ANCHOR.MIDDLE); cx+=w_
 filas=[("Licencia de Meta (WhatsApp Business)","Cuota mensual fija del proveedor","Mensual","€30/mes"),
 ("Conversaciones WhatsApp","Plantillas · por conversación iniciada","Por conversación","€18 – €55"),
-("Tokens de IA (modelo conversacional)","Agente que cualifica, responde y agenda","Por volumen de mensajes","€28 – €74"),
+("Tokens de IA (modelo conversacional)","Agente que cualifica, responde y agenda","Por volumen  ·  o ilimitado *","€28–€74  ·  €127/mes *"),
 ("Envío de correos","Recordatorios y seguimientos (opcional)","Por envío","€0 – €18")]
 rh=0.6
 for i,(nom,desc,modelo,est) in enumerate(filas):
@@ -246,8 +246,8 @@ for i,(nom,desc,modelo,est) in enumerate(filas):
     text(s,x+cc[0][1]+0.12,ty,cc[1][1]-0.24,rh,[[(modelo,10,False,INK)]],anchor=MSO_ANCHOR.MIDDLE)
     text(s,x+cc[0][1]+cc[1][1]+0.12,ty,cc[2][1]-0.24,rh,[[(est,11.5,True,PRIMARY)]],align=PP_ALIGN.RIGHT,anchor=MSO_ANCHOR.MIDDLE)
 iy=t0+0.5+len(filas)*rh+0.12
-rect(s,0.55,iy,12.2,0.66,RGBColor(0xEE,0xEC,0xFB),rounded=True)
-text(s,0.78,iy+0.06,11.7,0.55,[[("Estos consumos no los factura "+BRAND+".  ",10,True,ACCENT),("Son pagos directos a los proveedores según el volumen real; en el discovery técnico afinamos las cifras según los canales que se activen.  *Cifras en € (IVA no incluido).",10,False,GRAY)]],sp=0,anchor=MSO_ANCHOR.MIDDLE)
+rect(s,0.55,iy,12.2,0.98,RGBColor(0xEE,0xEC,0xFB),rounded=True)
+text(s,0.78,iy+0.09,11.7,0.82,[[("Estos consumos no los factura "+BRAND+".  ",10,True,ACCENT),("Son pagos directos a los proveedores según el volumen real; en el discovery afinamos las cifras.",10,False,GRAY)],[("* Tokens de IA: por volumen (€28–€74) o plan ILIMITADO 127 €/mes —recomendado para clínicas con alto tráfico de leads.   Cifras en € (IVA no incluido).",10,False,GRAY)]],sp=3,anchor=MSO_ANCHOR.MIDDLE)
 footer(s,16,"Costes operativos")
 
 # 17 Cierre
