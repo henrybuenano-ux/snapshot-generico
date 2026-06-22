@@ -33,7 +33,7 @@ FONT       = "Calibri"
 # Tarifas de gestión de ads (COSTO ómibu, €/mes) — reales del Excel 2026
 ADS = {"Z":"250 €/mes","S":"450 €/mes","P":"625 €/mes","T":"a medida"}
 OUT  = os.path.join(os.path.dirname(__file__), "omnia-sistema-clinicas.pptx")
-TOTAL = 16
+TOTAL = 17
 # ===========================================================================
 
 prs = Presentation(); prs.slide_width = Inches(13.333); prs.slide_height = Inches(7.5)
@@ -120,21 +120,21 @@ footer(s,5,"Asistente IA")
 # 6 Captación
 s=slide(); head(s,"Captación","Todos los canales en una bandeja —  y sabés de dónde vino cada lead","")
 cards(s,[("Multicanal",["WhatsApp, Instagram, Facebook","Una conversación por paciente","Nada se traspapela"],ACCENT2),
-("Atribución de ads",["Guarda UTM y el anuncio (Ad)","Sabés qué campaña trae pacientes","Mides retorno por fuente"],ACCENT2),
+("Atribución de ads",["Guarda UTM y el anuncio (Ad)","Sabés qué campaña trae pacientes"],ACCENT2),
 ("Canal detectado",["Etiqueta canal-wa/ig/fb","Pide el teléfono solo si hace falta","Listo para remarketing"],ACCENT2)],top=2.7,h=2.6)
 footer(s,6,"Captación multicanal")
 
 # 7 Pipeline
 s=slide(); head(s,"Pipeline de ventas","Ves en qué punto está cada paciente","Cada oportunidad avanza por etapas claras —  como una operación con fases.")
-chain(s,[("Nuevo Lead",""),("En conversación",""),("Pre-reserva",""),("Cita Reservada",""),("Cita Confirmada",""),("Servicio",""),("No reservó","")],top=3.2,h=1.4)
+chain(s,[("Nuevo Lead",""),("En conversación humana",""),("Pre-reserva / Cita Reservada",""),("Cita Confirmada",""),("No Asistió",""),("Servicio Realizado (Ganado)",""),("Perdido","")],top=3.2,h=1.4)
 text(s,0.55,5.2,12.2,1.0,[[("Los robots mueven al paciente de etapa automáticamente. Vos ves el tablero y sabés qué falta para cada cierre.",14,False,GRAY)]])
 footer(s,7,"Pipeline de ventas")
 
 # 8 Automatizaciones
 s=slide(); head(s,"Automatizaciones","9 robots que trabajan solos","Configurados y listos. Cada uno hace una tarea sin que nadie la recuerde.")
 cards(s,[("Bienvenida + IA",["Activa a Sofía","Crea la oportunidad"],ACCENT),("Cita reservada",["Confirma por WhatsApp","Mueve el pipeline"],ACCENT),
-("Recordatorio 24h",["Reduce ausencias","Mensaje automático"],ACCENT),("Remarketing",["Recupera al que no agendó","2 toques en 48h"],ACCENT),
-("Señal / depósito",["Valida el pago","Confirma la cita"],ACCENT),("Reputación Google",["Pide reseña tras el servicio","Filtra 4-5★ → Google"],ACCENT)],top=2.5,h=1.85,cols=3)
+("Recordatorio 24h",["Reduce ausencias","Mensaje automático"],ACCENT),("Remarketing",["Actúa en la etapa Perdido","Recupera al que no agendó","2 toques en 48h"],ACCENT),
+("Handoff a humano",["Deriva a una persona","Pausa el bot y avisa al equipo"],ACCENT),("Reputación Google",["Pide reseña tras el servicio","Filtra 4-5★ → Google"],ACCENT)],top=2.5,h=1.85,cols=3)
 footer(s,8,"Automatizaciones")
 
 # 9 Reputación
@@ -149,7 +149,7 @@ footer(s,9,"Reputación Google")
 # 10 Por nicho
 s=slide(); head(s,"Adaptable por nicho","El mismo sistema, ajustado a cada clínica","Cambia el catálogo, el tono y si se pide señal. La estrategia es la misma.")
 cards(s,[("Odontología",["Limpieza, ortodoncia, blanqueamiento","Tono cercano y claro","Señal: normalmente no"],ACCENT2),
-("Estética / Belleza",["Faciales, micropigmentación","Tono cálido","Señal: habitual (sí)"],ACCENT),
+("Estética / Belleza",["Faciales, micropigmentación, spa de uñas y cejas","Tono cálido","Señal: habitual (sí)"],ACCENT),
 ("Medicina estética",["Ácido, bótox, tratamientos","Tono profesional","Dudas clínicas → a humano"],ACCENT2)],top=2.7,h=2.7)
 footer(s,10,"Por nicho")
 
@@ -170,13 +170,13 @@ footer(s,12,"Antes vs Después")
 
 # 13 Planes (cliente) Z/S/P/T
 s=slide(); head(s,"Planes","Cuatro niveles —  el anuncio trae, el sistema convierte","Cada plan = gestión de ads (Google/Meta) + el sistema CRM "+BRAND+" completo.")
-planes=[("Captación · Z",["Ads: "+ADS["Z"],"1 canal (Google o Meta)","Campañas de leads","+ Sistema "+BRAND+" instalado"],ACCENT2),
-("Crecimiento · S",["Ads: "+ADS["S"],"Más campañas / 2 canales","+ Analítica de leads","+ Sistema "+BRAND],ACCENT),
-("Pro · P",["Ads: "+ADS["P"],"Gestión avanzada","+ Redistribución de presupuesto","+ Sistema "+BRAND],ACCENT2),
-("Escala · T",["Ads: "+ADS["T"],"Multi-campaña / multi-sede","+ Reporting a medida","+ Sistema "+BRAND],ACCENT)]
+planes=[("Captación · Z",["Ads: "+ADS["Z"],"1 canal (Google o Meta)","Campañas de leads","+ Sistema "+BRAND+" (impl. + mensual)"],ACCENT2),
+("Crecimiento · S",["Ads: "+ADS["S"],"Más campañas / 2 canales","+ Analítica de leads","+ Sistema "+BRAND+" (impl. + mensual)"],ACCENT),
+("Pro · P",["Ads: "+ADS["P"],"Gestión avanzada","+ Redistribución de presupuesto","+ Sistema "+BRAND+" (impl. + mensual)"],ACCENT2),
+("Escala · T",["Ads: "+ADS["T"],"Multi-campaña / multi-sede","+ Reporting a medida","+ Sistema "+BRAND+" (impl. + mensual)"],ACCENT)]
 cards(s,planes,top=2.5,h=2.85,cols=4)
-rect(s,0.55,5.55,12.2,0.62,WARNBG,rounded=True)
-text(s,0.75,5.62,11.8,0.5,[[("Inversión en anuncios aparte (al medio): mínimo 300 €/campaña.   ",11.5,True,WARN),("Precio al cliente y setup del sistema: a definir por "+BRAND+" (ver slide interna).",11.5,False,WARN)]])
+rect(s,0.55,5.5,12.2,0.72,WARNBG,rounded=True)
+text(s,0.75,5.57,11.8,0.6,[[("Sistema "+BRAND+" = implementación única + mensualidad.  Aparte: inversión en ads (mín. 300 €/camp.) ",11,True,WARN)],[("+ costos de comunicación (WhatsApp, email, IA) según consumo.  Precio final al cliente: a definir (ver slides internas).",11,False,WARN)]],sp=2)
 footer(s,13,"Planes")
 
 # 14 INTERNO — modelo
@@ -187,26 +187,34 @@ footer(s,14,"Modelo de negocio",internal=True)
 
 # 15 INTERNO — costo / margen
 s=slide(); head(s,"Costo y margen","Estructura por nivel (a completar)","Uso interno —  costos "+ADS_PARTNER+" reales; precio al cliente y margen los define "+BRAND+".")
-cols=[("Nivel",2.6),("Ads (costo "+ADS_PARTNER+")",2.6),("Sistema "+BRAND,2.6),("Precio cliente",2.2),("Margen",2.2)]
-x=0.55; t0=2.5
+cols=[("Nivel",2.3),("Ads (costo "+ADS_PARTNER+")",2.2),("Sistema "+BRAND+" /mes",2.1),("Comunicación",2.0),("Precio cliente",1.9),("Margen",1.7)]
+x=0.55; t0=2.45
 cx=x
 for (h_,w_) in cols:
-    rect(s,cx,t0,w_,0.5,PRIMARY); text(s,cx+0.08,t0,w_-0.16,0.5,[[(h_,10.5,True,WHITE)]],anchor=MSO_ANCHOR.MIDDLE); cx+=w_
-rows=[("Captación · Z",ADS["Z"],"setup + mes","[definir]","[definir]"),
-("Crecimiento · S",ADS["S"],"incluido","[definir]","[definir]"),
-("Pro · P",ADS["P"],"incluido","[definir]","[definir]"),
-("Escala · T",ADS["T"],"incluido","[definir]","[definir]")]
+    rect(s,cx,t0,w_,0.5,PRIMARY); text(s,cx+0.07,t0,w_-0.14,0.5,[[(h_,9.5,True,WHITE)]],anchor=MSO_ANCHOR.MIDDLE); cx+=w_
+rows=[("Captación · Z",ADS["Z"],"[definir]","según consumo","[definir]","[definir]"),
+("Crecimiento · S",ADS["S"],"[definir]","según consumo","[definir]","[definir]"),
+("Pro · P",ADS["P"],"[definir]","según consumo","[definir]","[definir]"),
+("Escala · T",ADS["T"],"[definir]","según consumo","[definir]","[definir]")]
 for r_i,row in enumerate(rows):
     ty=t0+0.5+r_i*0.55; cx=x; bg=WHITE if r_i%2==0 else LIGHT
     for (val,(h_,w_)) in zip(row,cols):
         rect(s,cx,ty,w_,0.55,bg)
         bold = (val.startswith("Captación") or val.startswith("Crecim") or val.startswith("Pro") or val.startswith("Escala"))
         col = WARN if val=="[definir]" else INK
-        text(s,cx+0.08,ty,w_-0.16,0.55,[[(val,10.5,bold,col)]],anchor=MSO_ANCHOR.MIDDLE); cx+=w_
-text(s,0.55,5.5,12.2,0.9,[[("Para cerrar la tabla necesito de "+BRAND+": precio del SISTEMA (setup + mensual) y si los ads van a costo o con markup.",12.5,True,WARN)]])
+        text(s,cx+0.07,ty,w_-0.14,0.55,[[(val,9.5,bold,col)]],anchor=MSO_ANCHOR.MIDDLE); cx+=w_
+text(s,0.55,5.35,12.2,1.3,[[("+ Implementación única del sistema (one-time): [definir].   ·   Comunicación = WhatsApp + email + IA (slide siguiente).",11.5,True,WARN)],[("Falta definir por "+BRAND+": precio del SISTEMA (implementación + mensual) y si los ads van a costo o con markup.",11.5,False,WARN)]],sp=4)
 footer(s,15,"Costo / margen",internal=True)
 
-# 16 Cierre
+# 16 INTERNO — costos de comunicación
+s=slide(); head(s,"Costos de comunicación","Lo que consume el sistema (operativo)","Uso interno —  aparte de la gestión de ads y de la inversión publicitaria. Definir montos y si se incluyen en la mensualidad o se facturan por uso.")
+cards(s,[("Licencia WhatsApp",["Meta cobra por conversación","(utility / marketing)","+ posible fee de plataforma","Monto: [definir]"],ACCENT2),
+("Correos electrónicos",["Costo por envío / volumen","Boletines + automatizaciones","Monto: [definir]"],ACCENT2),
+("Tokens de IA (Sofía)",["DECIDIR el modelo:","☐ Ilimitada (cuota fija)","☐ Por consumo (por mensaje)","Monto: [definir]"],ACCENT2)],top=2.65,h=2.9)
+text(s,0.55,5.75,12.2,0.7,[[("Recomendado: incluir un 'fee de comunicación' fijo en la mensualidad y avisar que el consumo alto se factura aparte.",12,True,WARN)]])
+footer(s,16,"Costos de comunicación",internal=True)
+
+# 17 Cierre
 s=slide(); rect(s,0,0,SW.inches,SH.inches,PRIMARY); rect(s,0,0,0.25,SH.inches,ACCENT)
 text(s,1.0,2.1,11.5,0.5,[[("EN RESUMEN",13,True,ACCENT)]])
 text(s,1.0,2.6,11.5,1.6,[[("Un sistema que capta, atiende",30,True,WHITE)],[("y fideliza —  con una sola factura.",30,True,WHITE)]],sp=2)
