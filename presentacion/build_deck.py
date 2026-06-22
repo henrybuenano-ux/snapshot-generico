@@ -38,8 +38,8 @@ VALOR_CUSTOM = "5.683 $"    # ancla: lo que costaría el sistema a medida (cotiz
 ACTIVACION   = "290 €"      # alta/activación única (productizado, snapshot templatizado)
 SYS_MES      = "197 €/mes"  # sistema omnia (SaaS): Sofía + pipeline + reputación + workflows + soporte
 ADS_COST  = {"Z":"250 €","S":"450 €","P":"625 €","T":"a medida"}              # COSTO ómibu (Excel)
-ADS_PVP   = {"Z":"350 €/mes","S":"630 €/mes","P":"875 €/mes","T":"a medida"}  # precio omnia (markup ~40%)
-PLAN_TOTAL= {"Z":"547 €/mes","S":"827 €/mes","P":"1.072 €/mes","T":"a medida"}# sistema + ads
+ADS_PVP   = {"Z":"250 €/mes","S":"450 €/mes","P":"625 €/mes","T":"a medida"}  # precio cliente = tarifa ómibu
+PLAN_TOTAL= {"Z":"447 €/mes","S":"647 €/mes","P":"822 €/mes","T":"a medida"} # ómibu + sistema 197
 ADS_MARGEN= {"Z":"100 €","S":"180 €","P":"250 €","T":"—"}
 OUT  = os.path.join(os.path.dirname(__file__), "omnia-sistema-clinicas.pptx")
 TOTAL = 17
@@ -92,16 +92,17 @@ def cards(s,items,top=2.6,h=3.2,cols=3):
     gap=0.3; total=12.2; w=(total-gap*(cols-1))/cols
     for i,(title,body,accent) in enumerate(items):
         row,col=divmod(i,cols); l=0.55+col*(w+gap); t=top+row*(h+0.3)
-        rect(s,l,t,w,h,LIGHT,rounded=True); rect(s,l,t,w,0.13,accent)
+        rect(s,l,t,w,h,LIGHT,rounded=True); rect(s,l+0.08,t+0.08,w-0.16,0.09,accent,rounded=True)
         text(s,l+0.2,t+0.3,w-0.4,0.7,[[(title,14,True,PRIMARY)]])
         text(s,l+0.2,t+1.0,w-0.4,h-1.15,[[("•  "+b,11,False,INK)] for b in body],sp=5)
 
 # 1 Portada
 s=slide(); grad(s,0,0,SW.inches,SH.inches,GA,GC,35)
 text(s,1.0,2.0,11.5,0.5,[[("GUÍA PARA EQUIPO Y CLIENTE",13,True,WHITE)]])
-text(s,1.0,2.5,11.5,1.2,[[(BRAND,54,True,WHITE)]])
-text(s,1.0,3.7,11.5,0.9,[[(SUBBRAND,22,False,WHITE)]])
-text(s,1.0,4.6,11.5,0.5,[[(NICHOS,15,False,WHITE)]])
+text(s,1.0,2.4,11.5,1.2,[[(BRAND,54,True,WHITE)]])
+text(s,1.0,3.55,11.5,0.5,[[("in business",18,False,WHITE)]])
+text(s,1.0,4.1,11.5,0.9,[[(SUBBRAND,22,False,WHITE)]])
+text(s,1.0,5.0,11.5,0.5,[[(NICHOS,15,False,WHITE)]])
 if LOGO_PATH and os.path.exists(LOGO_PATH): s.shapes.add_picture(LOGO_PATH,Inches(10.6),Inches(0.6),height=Inches(1.0))
 text(s,1.0,6.3,11.5,0.5,[[("Convertimos anuncios en pacientes —  y pacientes en reseñas de 5★.",13,False,WHITE)]])
 
@@ -198,37 +199,54 @@ footer(s,13,"Planes")
 
 # 14 INTERNO — modelo
 s=slide(); head(s,"Modelo de negocio","Cómo se arma y quién factura","Uso interno —  no mostrar al cliente.")
-chain(s,[(ADS_PARTNER+" (Ads)","provee la gestión\nde campañas (COSTO)"),(BRAND+" (CRM)","añade el sistema\ny FACTURA todo"),("Cliente / Clínica","paga 1 sola\nfactura a "+BRAND)],top=3.0,h=1.8)
-text(s,0.55,5.3,12.2,1.2,[[(BRAND+" compra los ads a "+ADS_PARTNER+" (tarifas del Excel = costo), le suma su producto propio —el sistema CRM (Sofía, pipeline, reputación)— y vende el paquete completo al cliente con una sola factura.",13.5,False,INK)]])
+chain(s,[(ADS_PARTNER+" (Ads)","gestiona campañas\n(tarifa de lista)"),(BRAND+" (CRM)","añade el sistema\ny FACTURA todo"),("Cliente / Clínica","paga 1 sola\nfactura a "+BRAND)],top=3.0,h=1.8)
+text(s,0.55,5.3,12.2,1.2,[[("El cliente paga la tarifa "+ADS_PARTNER+" por los ads (precio de lista); "+BRAND+" los gestiona con descuento interno de "+ADS_PARTNER+", suma su sistema CRM propio (Sofía, pipeline, reputación) y factura todo en una sola cuota.",13.5,False,INK)]])
 footer(s,14,"Modelo de negocio",internal=True)
 
 # 15 INTERNO — costo / margen
-s=slide(); head(s,"Costo y margen","Estructura por nivel (propuesta)","Uso interno —  costos "+ADS_PARTNER+" reales + precios producto propuestos. Validar.")
-cols=[("Nivel",1.95),("Costo ads ("+ADS_PARTNER+")",2.05),("Precio ads",1.85),("Sistema /mes",1.85),("Total cliente /mes",2.25),("Margen ads",2.2)]
-x=0.55; t0=2.45
+s=slide(); head(s,"Economía del modelo","Por nivel (propuesta para dirección)","Uso interno —  precio al cliente, ingreso recurrente de "+BRAND+" y ancla de valor.")
+cols=[("Nivel",2.6),("Ads (precio cliente = "+ADS_PARTNER+")",3.4),("Sistema "+BRAND+" /mes",3.0),("Total cliente /mes",3.2)]
+x=0.55; t0=2.5
 cx=x
 for (h_,w_) in cols:
-    rect(s,cx,t0,w_,0.5,PRIMARY); text(s,cx+0.06,t0,w_-0.12,0.5,[[(h_,9,True,WHITE)]],anchor=MSO_ANCHOR.MIDDLE); cx+=w_
-rows=[("Captación · Z",ADS_COST["Z"],ADS_PVP["Z"],SYS_MES,PLAN_TOTAL["Z"],ADS_MARGEN["Z"]),
-("Crecimiento · S",ADS_COST["S"],ADS_PVP["S"],SYS_MES,PLAN_TOTAL["S"],ADS_MARGEN["S"]),
-("Pro · P",ADS_COST["P"],ADS_PVP["P"],SYS_MES,PLAN_TOTAL["P"],ADS_MARGEN["P"]),
-("Escala · T",ADS_COST["T"],ADS_PVP["T"],SYS_MES,PLAN_TOTAL["T"],ADS_MARGEN["T"])]
+    rect(s,cx,t0,w_,0.55,PRIMARY); text(s,cx+0.1,t0,w_-0.2,0.55,[[(h_,10,True,WHITE)]],anchor=MSO_ANCHOR.MIDDLE); cx+=w_
+rows=[("Captación · Z",ADS_PVP["Z"],SYS_MES,PLAN_TOTAL["Z"]),
+("Crecimiento · S",ADS_PVP["S"],SYS_MES,PLAN_TOTAL["S"]),
+("Pro · P",ADS_PVP["P"],SYS_MES,PLAN_TOTAL["P"]),
+("Escala · T",ADS_PVP["T"],SYS_MES,PLAN_TOTAL["T"])]
 for r_i,row in enumerate(rows):
-    ty=t0+0.5+r_i*0.5; cx=x; bg=WHITE if r_i%2==0 else LIGHT
+    ty=t0+0.55+r_i*0.55; cx=x; bg=WHITE if r_i%2==0 else LIGHT
     for (val,(h_,w_)) in zip(row,cols):
-        rect(s,cx,ty,w_,0.5,bg)
+        rect(s,cx,ty,w_,0.55,bg)
         bold = val.startswith(("Captación","Crecim","Pro","Escala"))
-        text(s,cx+0.06,ty,w_-0.12,0.5,[[(val,9,bold,INK)]],anchor=MSO_ANCHOR.MIDDLE); cx+=w_
-text(s,0.55,4.95,12.2,1.5,[[("Activación única: "+ACTIVACION+" (margen alto: el snapshot es templatizado).   ·   Sistema "+SYS_MES+" = plataforma + IA + soporte.",10.5,True,WARN)],[("Ancla de valor: a medida = "+VALOR_CUSTOM+" (cotizador).   ·   Comunicación (WhatsApp/email/IA) según consumo.   ·   PROPUESTA — validar y unificar moneda.",10.5,False,WARN)]],sp=3)
+        text(s,cx+0.1,ty,w_-0.2,0.55,[[(val,10.5,bold,INK)]],anchor=MSO_ANCHOR.MIDDLE); cx+=w_
+text(s,0.55,5.55,12.2,1.3,[[("Activación única: "+ACTIVACION+"  ·  Ingreso recurrente "+BRAND+" = sistema "+SYS_MES+" (producto propio).",10.5,True,WARN)],[("Ads: precio cliente = tarifa "+ADS_PARTNER+"; "+BRAND+" recibe descuento interno de "+ADS_PARTNER+" (margen EN DISCUSIÓN).  Ancla de valor: a medida "+VALOR_CUSTOM+".  PROPUESTA.",10.5,False,WARN)]],sp=3)
 footer(s,15,"Costo / margen",internal=True)
 
-# 16 INTERNO — costos de comunicación
-s=slide(); head(s,"Costos de comunicación","Lo que consume el sistema (operativo)","Uso interno —  aparte de la gestión de ads y de la inversión publicitaria. Definir montos y si se incluyen en la mensualidad o se facturan por uso.")
-cards(s,[("Licencia WhatsApp",["Meta cobra por conversación","(utility / marketing)","+ posible fee de plataforma","Monto: [definir]"],ACCENT2),
-("Correos electrónicos",["Costo por envío / volumen","Boletines + automatizaciones","Monto: [definir]"],ACCENT2),
-("Tokens de IA (Sofía)",["DECIDIR el modelo:","☐ Ilimitada (cuota fija)","☐ Por consumo (por mensaje)","Monto: [definir]"],ACCENT2)],top=2.65,h=2.9)
-text(s,0.55,5.75,12.2,0.7,[[("Recomendado: incluir un 'fee de comunicación' fijo en la mensualidad y avisar que el consumo alto se factura aparte.",12,True,WARN)]])
-footer(s,16,"Costos de comunicación",internal=True)
+# 16 Costes operativos (cliente)
+s=slide(); head(s,"Consumos de terceros","Costes operativos estimados","Servicios externos que se pagan según uso, aparte de la cuota de "+BRAND+". El cliente mantiene el control y la titularidad de cada cuenta.")
+cc=[("Servicio",4.9),("Modelo de cobro",4.0),("Estimado mensual *",3.3)]
+x=0.55; t0=2.35
+cx=x
+for (h_,w_) in cc:
+    al=PP_ALIGN.RIGHT if h_.startswith("Estimado") else PP_ALIGN.LEFT
+    rect(s,cx,t0,w_,0.5,PRIMARY); text(s,cx+0.12,t0,w_-0.24,0.5,[[(h_,10.5,True,WHITE)]],align=al,anchor=MSO_ANCHOR.MIDDLE); cx+=w_
+filas=[("WhatsApp Business API","Mensajería oficial vía proveedor (Meta / BSP)","Por conversación iniciada","€18 – €55"),
+("Tokens de IA (modelo conversacional)","Agente que cualifica, responde y agenda","Por volumen de mensajes","€28 – €74"),
+("Plataforma CRM / automatización","Subcuenta donde vive el sistema","Suscripción mensual","€0 – €89"),
+("Envío de correos / SMS","Recordatorios y seguimientos (opcional)","Por envío","€0 – €18"),
+("Número de teléfono / centralita","Si se activa desvío o llamada (opcional)","Mensual + por minuto","€0 – €23")]
+rh=0.6
+for i,(nom,desc,modelo,est) in enumerate(filas):
+    ty=t0+0.5+i*rh; bg=WHITE if i%2==0 else LIGHT
+    rect(s,x,ty,12.2,rh,bg)
+    text(s,x+0.12,ty,cc[0][1]-0.24,rh,[[(nom,10.5,True,INK)],[(desc,8,False,GRAY)]],sp=0,anchor=MSO_ANCHOR.MIDDLE)
+    text(s,x+cc[0][1]+0.12,ty,cc[1][1]-0.24,rh,[[(modelo,10,False,INK)]],anchor=MSO_ANCHOR.MIDDLE)
+    text(s,x+cc[0][1]+cc[1][1]+0.12,ty,cc[2][1]-0.24,rh,[[(est,11.5,True,PRIMARY)]],align=PP_ALIGN.RIGHT,anchor=MSO_ANCHOR.MIDDLE)
+iy=t0+0.5+5*rh+0.12
+rect(s,0.55,iy,12.2,0.66,RGBColor(0xEE,0xEC,0xFB),rounded=True)
+text(s,0.78,iy+0.06,11.7,0.55,[[("Estos consumos no los factura "+BRAND+".  ",10,True,ACCENT),("Son pagos directos a los proveedores según el volumen real; en el discovery técnico afinamos las cifras según los canales que se activen.  *Cifras en € (IVA no incluido).",10,False,GRAY)]],sp=0,anchor=MSO_ANCHOR.MIDDLE)
+footer(s,16,"Costes operativos")
 
 # 17 Cierre
 s=slide(); grad(s,0,0,SW.inches,SH.inches,GA,GC,35)
