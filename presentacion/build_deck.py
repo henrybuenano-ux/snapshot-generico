@@ -19,7 +19,7 @@ BRAND      = "omnia"
 SUBBRAND   = "Sistema Ads + CRM para Clínicas"
 NICHOS     = "Odontología · Estética · Medicina estética"
 ADS_PARTNER= "ómibu"                       # motor de ads (proveedor, uso interno)
-LOGO_PATH  = ""                            # ruta a un PNG -> aparece en portada
+LOGO_PATH  = os.path.join(os.path.dirname(__file__),"assets","omnia-logo.png")  # logo omnia (assets/)
 PRIMARY    = RGBColor(0x14, 0x10, 0x2B)    # índigo oscuro (omnia)
 ACCENT     = RGBColor(0x9A, 0x3C, 0xE0)    # púrpura omnia
 ACCENT2    = RGBColor(0x4F, 0x46, 0xE5)    # azul/índigo omnia
@@ -98,12 +98,11 @@ def cards(s,items,top=2.6,h=3.2,cols=3):
 
 # 1 Portada
 s=slide(); grad(s,0,0,SW.inches,SH.inches,GA,GC,35)
-text(s,1.0,2.0,11.5,0.5,[[("GUÍA PARA EQUIPO Y CLIENTE",13,True,WHITE)]])
-text(s,1.0,2.4,11.5,1.2,[[(BRAND,54,True,WHITE)]])
-text(s,1.0,3.55,11.5,0.5,[[("in business",18,False,WHITE)]])
-text(s,1.0,4.1,11.5,0.9,[[(SUBBRAND,22,False,WHITE)]])
-text(s,1.0,5.0,11.5,0.5,[[(NICHOS,15,False,WHITE)]])
-if LOGO_PATH and os.path.exists(LOGO_PATH): s.shapes.add_picture(LOGO_PATH,Inches(10.6),Inches(0.6),height=Inches(1.0))
+rect(s,0.9,0.7,2.95,1.35,WHITE,rounded=True)
+if LOGO_PATH and os.path.exists(LOGO_PATH): s.shapes.add_picture(LOGO_PATH,Inches(1.18),Inches(0.98),height=Inches(0.8))
+text(s,1.0,2.75,11.5,0.5,[[("GUÍA PARA EQUIPO Y CLIENTE",13,True,WHITE)]])
+text(s,1.0,3.25,11.5,1.5,[[(SUBBRAND,34,True,WHITE)]])
+text(s,1.0,4.8,11.5,0.5,[[(NICHOS,16,False,WHITE)]])
 text(s,1.0,6.3,11.5,0.5,[[("Convertimos anuncios en pacientes —  y pacientes en reseñas de 5★.",13,False,WHITE)]])
 
 # 2 Problema
@@ -250,6 +249,8 @@ footer(s,16,"Costes operativos")
 
 # 17 Cierre
 s=slide(); grad(s,0,0,SW.inches,SH.inches,GA,GC,35)
+rect(s,0.9,0.6,2.5,1.12,WHITE,rounded=True)
+if LOGO_PATH and os.path.exists(LOGO_PATH): s.shapes.add_picture(LOGO_PATH,Inches(1.12),Inches(0.83),height=Inches(0.66))
 text(s,1.0,2.1,11.5,0.5,[[("EN RESUMEN",13,True,WHITE)]])
 text(s,1.0,2.6,11.5,1.6,[[("Un sistema que capta, atiende",30,True,WHITE)],[("y fideliza —  con una sola factura.",30,True,WHITE)]],sp=2)
 text(s,1.0,4.4,11.5,1.4,[[("✓  Ads (Google/Meta) + CRM en un solo sistema",15,False,WHITE)],[("✓  En español de España, para odontología, estética y medicina",15,False,WHITE)],[("✓  Templatizado y masivo: nuevo cliente en horas",15,False,WHITE)]],sp=8)
