@@ -14,10 +14,11 @@ LOGO, LOGOW = b64("omnia-logo.png"), b64("omnia-logo-white.png")
 CSS = r"""
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--grad:linear-gradient(135deg,#4f46e5 0%,#7c3aed 50%,#db2777 100%);--ink:#0f172a;--muted:#52525b;--line:#ece9f7}
+html,body{margin:0;padding:0;overflow-x:hidden;width:100%}
 html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
 body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);background:#f6f5fb;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:'Outfit','Plus Jakarta Sans',sans-serif;letter-spacing:-.02em;line-height:1.06}
-.slide{position:relative;width:100%;min-height:100vh;padding:7vh 7vw 9vh;display:flex;flex-direction:column;justify-content:center;scroll-snap-align:start;overflow:hidden;border-bottom:1px solid var(--line)}
+.slide{position:relative;width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);min-height:100vh;padding:7vh 7vw 9vh;display:flex;flex-direction:column;justify-content:center;scroll-snap-align:start;overflow:hidden;border-bottom:1px solid var(--line)}
 .kick{font-family:'Outfit';font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;color:#7c3aed;margin-bottom:.7rem}
 .h{font-size:clamp(1.9rem,4vw,3rem);font-weight:800}
 .sub{color:var(--muted);font-size:clamp(1rem,1.35vw,1.18rem);margin-top:.7rem;max-width:64ch}
@@ -30,7 +31,7 @@ h1,h2,h3{font-family:'Outfit','Plus Jakarta Sans',sans-serif;letter-spacing:-.02
 .cover{background:var(--grad);color:#fff;justify-content:center}
 .cover:before{content:'';position:absolute;inset:0;background:radial-gradient(1200px 520px at 80% -10%,rgba(255,255,255,.22),transparent 60%)}
 .cover .conf{background:rgba(255,255,255,.18);color:#fff;border-color:rgba(255,255,255,.4)}
-.logo{position:relative;height:54px;margin-bottom:2rem}
+.logo{position:relative;height:56px;width:auto;align-self:flex-start;max-width:72vw;object-fit:contain;margin-bottom:2rem}
 .cover .h{color:#fff;font-size:clamp(2.4rem,5.2vw,4rem);max-width:18ch}
 .cover .sub{color:rgba(255,255,255,.92);max-width:56ch}
 .tagrow{margin-top:1.6rem;display:flex;gap:10px;flex-wrap:wrap}
@@ -87,7 +88,8 @@ h1,h2,h3{font-family:'Outfit','Plus Jakarta Sans',sans-serif;letter-spacing:-.02
 .paycard .top{height:6px;margin:0 -28px 22px}
 .paycard .lbl{font-family:'Outfit';font-weight:800;letter-spacing:.06em;font-size:.78rem;color:#7c3aed;text-transform:uppercase}
 .paycard .ln{font-size:1.1rem;font-weight:600;margin-top:10px}.paycard .tot{font-family:'Outfit';font-size:2.1rem;font-weight:900;margin-top:8px}
-@media (max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.pcard.feat{transform:none}.g3{grid-template-columns:1fr}.compare,.pay{grid-template-columns:1fr}}
+@media (max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.pcard.feat{transform:none}.g3{grid-template-columns:repeat(2,1fr)}.compare,.pay{grid-template-columns:1fr}}
+@media (max-width:640px){.slide{padding:6vh 6vw 9vh}.cards,.g2,.g3{grid-template-columns:1fr}.arrow,.psep{display:none}.step,.stage{min-width:100%}.flow,.pipe{gap:8px}.ptable{font-size:.8rem}.ptable th,.ptable td{padding:9px 11px}.logo{height:46px}.foot{font-size:.68rem}}
 @media print{html,body{background:#fff}.slide{min-height:auto;height:100vh;page-break-after:always}.cover:before,.light:before,.light:after{display:none}}
 """
 
