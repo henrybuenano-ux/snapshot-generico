@@ -37,21 +37,53 @@ Ambas partes se reconocen capacidad legal suficiente para contratar y **ACUERDAN
 ## 1. Objeto
 omnia prestará al Cliente el servicio **«Sistema Ads + CRM para Clínicas»**: la instalación y puesta en marcha de un sistema CRM preconfigurado (en adelante, el «Sistema») sobre la plataforma GoHighLevel, junto con la **gestión de campañas publicitarias** (Google/Meta) según el plan **`{{custom_values.plan_contratado}}`**.
 
-## 2. Alcance del servicio (QUÉ INCLUYE)
-**2.1. Sistema CRM (instalación templatizada):**
-- Asistente virtual con IA (chatbot) preconfigurado para atención y reserva de citas.
-- Pipeline de ventas con sus etapas.
-- Conjunto **estándar** de automatizaciones (workflows) del snapshot.
-- Módulo de reputación / reseñas de Google.
-- Calendario de citas y plantillas de mensajería estándar.
-- **Personalización limitada** del snapshot: logotipo, colores, datos del negocio, catálogo de servicios/precios y textos, a partir de los datos aportados por el Cliente en el formulario de alta. *No incluye desarrollos ni lógica a medida fuera del snapshot estándar.*
+## 2. Alcance del servicio (CAPACIDADES — QUÉ INCLUYE)
 
-**2.2. Gestión de publicidad (`{{custom_values.canales_ads}}`)** según el plan contratado: configuración, puesta en marcha y optimización de las campañas, en los límites del plan `{{custom_values.plan_contratado}}`.
+> El **Sistema CRM es idéntico en los cuatro planes** (Z / S / P / T). Lo único que varía entre planes es el **alcance de la gestión de publicidad** (cláusula 2.3).
 
-**2.3. Soporte** de mantenimiento del Sistema en horario laboral.
+**2.1. Sistema CRM «omnia para Clínicas» (instalación templatizada sobre GoHighLevel).** Se entrega tal y como está configurado en el snapshot estándar de omnia, e incluye:
+
+- **Asistente virtual con IA** (1 asistente, en castellano): atención automatizada por chat, respuesta a preguntas frecuentes, cualificación de leads, **reserva de citas** y derivación a persona humana (*handoff*).
+- **Embudo de ventas:** **1 pipeline de ventas** estándar con sus etapas (lead → contacto → cita → asistencia → ganado / perdido).
+- **Automatizaciones estándar (workflows del snapshot):** bienvenida y activación del bot, pre-reserva, **recordatorio de cita (24 h)**, remarketing a leads sin reservar, normalización del servicio de interés, confirmación de señal/depósito (si aplica), *handoff* a humano, baja/opt-out y solicitud de reseña.
+- **Módulo de reputación y reseñas de Google:** reactivación de base de datos, captación de reseñas de 5★, redirección a Google y gestión de valoraciones.
+- **Formulario de alta (onboarding)** con **volcado automático** de los datos del negocio a la configuración del Sistema.
+- **Calendario de citas:** **1 calendario** (zona horaria, duración y disponibilidad).
+- **Catálogo de servicios:** hasta **6 servicios** con su precio.
+- **Plantillas de mensajería estándar** (WhatsApp / email / SMS) del snapshot.
+- **Personalización del snapshot** a partir del formulario de alta: logotipo (vertical y horizontal), colores, datos del negocio, catálogo de servicios y precios, horarios, FAQ, política de privacidad y textos.
+
+> El Sistema entregado es el **snapshot estándar de omnia (producto MVP)**. La personalización se limita a **marca, datos y textos**; **no incluye** desarrollos, lógica, integraciones ni automatizaciones a medida fuera del snapshot (cláusula 3).
+
+**2.2. Gestión de publicidad (`{{custom_values.canales_ads}}`):** configuración, puesta en marcha y optimización de las campañas, dentro de los límites del plan **`{{custom_values.plan_contratado}}`**.
+
+**2.3. Alcance de publicidad por plan** (lo único que cambia entre planes):
+
+| Plan | Gestión de ads incluida |
+|---|---|
+| **Captación · Z** | 1 canal (Google **o** Meta) |
+| **Crecimiento · S** | 2 canales (Google **y** Meta) + analítica |
+| **Pro · P** | Gestión avanzada + redistribución de presupuesto |
+| **Escala · T** | Multi-sede / multi-campaña + reporting a medida |
+
+**2.4. Soporte** de mantenimiento del Sistema en horario laboral (L-V).
 
 ## 3. Límites y exclusiones (QUÉ NO INCLUYE)
-Salvo pacto expreso por escrito, **NO** están incluidos en este contrato:
+
+**3.1. Naturaleza del producto.** El Sistema es un **producto estándar (MVP)**: se entrega **tal cual**, con **ajustes limitados** (marca, datos, textos y catálogo). No se modifican los workflows, las etapas del pipeline ni la lógica del asistente más allá de la configuración estándar.
+
+**3.2. Límites cuantitativos del Sistema** (ampliar cualquiera de ellos se rige por la cláusula 9):
+
+| Elemento | Incluido en el estándar |
+|---|---|
+| Asistente virtual (IA) | 1, en castellano |
+| Pipeline de ventas | 1 (estándar) |
+| Calendario de citas | 1 |
+| Catálogo de servicios | hasta 6 |
+| Workflows / plantillas | los del snapshot estándar |
+| Idiomas | 1 (castellano) |
+
+**3.3.** Salvo pacto expreso por escrito, **NO** están incluidos:
 - a) Desarrollos, automatizaciones (workflows) o funcionalidades **adicionales** a las del snapshot estándar.
 - b) Integraciones con sistemas de terceros no contempladas en el Sistema.
 - c) Diseño/desarrollo de páginas web, landing pages o funnels fuera de lo incluido en el plan.
