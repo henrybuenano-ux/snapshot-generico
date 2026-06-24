@@ -291,3 +291,30 @@ Lo que está bien: usa **SMS** (no depende de Meta), 9 workflows + 2 forms + sur
 - [ ] Pegar las 3 partes del prompt del bot + conectar acciones (Contact Info, Human Handover, Appointment Booking → calendario)
 - [ ] Añadir filtro *Doesn't Have Tag* `baja-marketing` a workflows de Marketing
 - [ ] Prueba end-to-end: lead → bot reserva → confirmación → (señal) → validación → reseña
+
+---
+
+## 🔁 AUTOMATIZACIÓN "Actualizacion de CV" (form → custom values) — construida 2026-06-24
+
+WF `188c2d5e-44a3-479c-a109-7534cb6f50f7` (loc `c8FNGEjTOUL3VfR43w7e`). Trigger **Form Submitted** → form **"Onboarding y CV"** (`IYiB5VuHfT8dDTM1uYot`). **41 nodos** `update_custom_value`: cada campo de contacto del alta vuelca a su Custom Value de cuenta. Incluye 2 CV nuevos: `logo_vertical` (`kUNEIeHXwRLJzmYVakYb`) y `logo_horizontal` (`brD9RWy7QlwatNyf0XqJ`).
+
+### ⚠️ Estructura VERIFICADA del action `update_custom_value` (memorizar)
+La UI de GHL lee `custom_value_id` + `new_value`. Un nodo con SOLO `fields` **se guarda pero sale en blanco + ⚠️**. Hacen falta las 4 claves:
+```json
+{
+  "type": "update_custom_value",
+  "name": "CV · <nombre>",
+  "attributes": {
+    "type": "update_custom_value",
+    "fields": [{ "field": "<cvId>", "value": "{{contact.<campo>}}" }],
+    "custom_value_id": "<cvId>",
+    "new_value": "{{contact.<campo>}}",
+    "current_value": "<valor actual del CV>"
+  }
+}
+```
+Builder listo: `workflow_builder.custom_value_step(cv_id, cv_name, value, current_value)`.
+
+> Nota merge tags: los campos del form de alta tienen key con doble "contact" (`contact.contactlocalidad`) → el tag correcto es `{{contact.contactlocalidad}}`. Los 2 logos tienen key limpia (`contact.logo_vertical_9_16`, `contact.logos_horizontal_16_9`).
+
+> Nota entorno: el shell exporta `GHL_LOCATION_ID=30fL2DR9K58StO46WN4Y` (OTRA subcuenta). El `.env` apunta a `c8FN…` (snapshot). Cargar el `.env` con **override**, no `setdefault`, o se trabaja en la cuenta equivocada.

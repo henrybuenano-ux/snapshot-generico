@@ -125,6 +125,34 @@ def ai_step(name: str, prompt: str, model: str = "gpt-4o", **kw: Any) -> dict:
     }
 
 
+def custom_value_step(
+    cv_id: str, cv_name: str, value: str, current_value: str = "", **kw: Any
+) -> dict:
+    """Update Custom Value action.
+
+    VERIFIED 2026-06-24 against the live GHL builder UI. The UI reads
+    ``custom_value_id`` + ``new_value`` — a node with ONLY ``fields`` saves but
+    renders blank (empty dropdown + empty value) and shows a ⚠️. All four keys
+    below are required for the action to display and run correctly.
+
+    Args:
+        cv_id:   the custom VALUE id (e.g. "tRXf6zOWplKPjo2zlDY2").
+        cv_name: display name for the node label.
+        value:   merge field to write, e.g. "{{contact.contactnombre_del_negocio}}".
+        current_value: the CV's current stored value (display-only).
+    """
+    return {
+        "id": _uid(), "type": "update_custom_value", "name": f"CV · {cv_name}",
+        "attributes": {
+            "type": "update_custom_value",
+            "fields": [{"field": cv_id, "value": value}],
+            "custom_value_id": cv_id,
+            "new_value": value,
+            "current_value": current_value,
+        }, **kw,
+    }
+
+
 # ── Step Linker ───────────────────────────────────────────────────────────
 
 def link_steps(steps: list[dict]) -> list[dict]:
